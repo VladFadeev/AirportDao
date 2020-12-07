@@ -10,7 +10,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 
 
 import static edu.epam.fadeev.dao.DaoErrorCode.*;
@@ -21,15 +24,17 @@ public class AirportDaoImpl implements AirportDao {
     @Override
     public void add(Airline airline) throws DaoException {
         log.debug(">>Started add<<");
-        if (airline != null && Airport.getInstance().getSchedule().stream()
-                                                    .filter(temp -> temp.getFlightNumber() == airline.getFlightNumber())
-                                                    .findFirst().isEmpty()) {
-            List<Airline> schedule = Airport.getInstance().getSchedule();
-            schedule.add(airline);
-            Airport.getInstance().setSchedule(schedule);
-        } else {
+        if (airline == null) {
             log.error(EXC_DAO_002.toString());
             throw new DaoException(EXC_DAO_002);
+        }
+        List<Airline> schedule = Airport.getInstance().getSchedule();
+        if (schedule.stream()
+                    .filter(temp -> temp.getFlightNumber() == airline.getFlightNumber())
+                    .findFirst()
+                    .isEmpty()) {
+            schedule.add(airline);
+            Airport.getInstance().setSchedule(schedule);
         }
         log.debug(">>Finished add<<");
     }

@@ -51,9 +51,9 @@ public class AirportDaoImplTest {
 
     @Test
     public void testUpdate() throws DaoException {
-        Airline expected = airport.getSchedule().get(0);
+        Airline expected = new Airline("New-York", 1257, new PlaneType(Manufacturer.values()[1], "767"), LocalTime.of(23, 0), new Weekday[]{Weekday.TUESDAY, Weekday.THURSDAY});
         expected.setDeparture(LocalTime.of(23, 0));
-        airportDao.update(new Airline("New-York", 1257, new PlaneType(Manufacturer.values()[1], "767"), LocalTime.of(23, 0), new Weekday[]{Weekday.TUESDAY, Weekday.THURSDAY}));
+        airportDao.update(expected);
         Airline actual = airport.getSchedule().get(10);
         assertEquals(actual, expected);
     }
