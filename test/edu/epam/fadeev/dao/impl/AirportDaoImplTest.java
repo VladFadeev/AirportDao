@@ -4,9 +4,10 @@ import edu.epam.fadeev.AirportTestListener;
 import edu.epam.fadeev.dao.AirportDao;
 import edu.epam.fadeev.dao.DaoException;
 import edu.epam.fadeev.entity.Airline;
+import edu.epam.fadeev.entity.Manufacturer;
 import edu.epam.fadeev.entity.PlaneType;
 import edu.epam.fadeev.entity.Weekday;
-import edu.epam.fadeev.reader.Reader;
+import edu.epam.fadeev.reader.DataReader;
 import edu.epam.fadeev.storage.Airport;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -27,13 +28,13 @@ public class AirportDaoImplTest {
     @BeforeClass
     public void init(){
         airport = Airport.getInstance();
-        airport.setSchedule(Reader.read());
+        airport.setSchedule(DataReader.read());
         airportDao = new AirportDaoImpl();
     }
 
     @Test
     public void testAdd() throws DaoException {
-        Airline expected = new Airline("Minsk", 19, PlaneType.TU154, LocalTime.of(13, 30), new Weekday[]{Weekday.FRIDAY, Weekday.SATURDAY});
+        Airline expected = new Airline("Minsk", 19, new PlaneType(Manufacturer.TU, "154"), LocalTime.of(13, 30), new Weekday[]{Weekday.FRIDAY, Weekday.SATURDAY});
         airportDao.add(expected);
         Airline actual =  airport.getSchedule().get(11);
         assertEquals(actual, expected);
@@ -52,7 +53,7 @@ public class AirportDaoImplTest {
     public void testUpdate() throws DaoException {
         Airline expected = airport.getSchedule().get(0);
         expected.setDeparture(LocalTime.of(23, 0));
-        airportDao.update(new Airline("New-York", 1257, PlaneType.values()[4], LocalTime.of(23, 0), new Weekday[]{Weekday.TUESDAY, Weekday.THURSDAY}));
+        airportDao.update(new Airline("New-York", 1257, new PlaneType(Manufacturer.values()[1], "767"), LocalTime.of(23, 0), new Weekday[]{Weekday.TUESDAY, Weekday.THURSDAY}));
         Airline actual = airport.getSchedule().get(10);
         assertEquals(actual, expected);
     }

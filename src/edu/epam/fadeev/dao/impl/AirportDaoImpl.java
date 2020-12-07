@@ -21,7 +21,9 @@ public class AirportDaoImpl implements AirportDao {
     @Override
     public void add(Airline airline) throws DaoException {
         log.debug(">>Started add<<");
-        if (airline != null) {
+        if (airline != null && Airport.getInstance().getSchedule().stream()
+                                                    .filter(temp -> temp.getFlightNumber() == airline.getFlightNumber())
+                                                    .findFirst().isEmpty()) {
             List<Airline> schedule = Airport.getInstance().getSchedule();
             schedule.add(airline);
             Airport.getInstance().setSchedule(schedule);

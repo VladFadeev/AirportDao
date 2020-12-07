@@ -5,7 +5,7 @@ import edu.epam.fadeev.dao.DaoException;
 import edu.epam.fadeev.dao.impl.AirportDaoImpl;
 import edu.epam.fadeev.entity.Airline;
 import edu.epam.fadeev.entity.Weekday;
-import edu.epam.fadeev.reader.Reader;
+import edu.epam.fadeev.reader.DataReader;
 import edu.epam.fadeev.storage.Airport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,7 @@ public class AirportService {
 
     private AirportService() {
         airportDao = new AirportDaoImpl();
-        Airport.getInstance().setSchedule(Reader.read());
+        Airport.getInstance().setSchedule(DataReader.read());
     }
 
     private static class AirportServiceHolder {
